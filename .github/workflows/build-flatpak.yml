@@ -1,6 +1,9 @@
 ---
 name: Build Flatpak bundle for wipEout rewrite
 
+on: 
+  workflow_dispatch:
+  
 jobs:
   flatpak:
     name: "Flatpak"
@@ -10,6 +13,8 @@ jobs:
       options: --privileged
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
     - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.1
       with:
         bundle: wipEout-rewrite.flatpak
