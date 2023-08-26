@@ -1,6 +1,9 @@
 ---
 name: Build Flatpak bundle for wipEout rewrite
 
+on: 
+  workflow_dispatch:
+  
 jobs:
   flatpak:
     name: "Flatpak"
