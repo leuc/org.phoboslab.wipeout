@@ -22,4 +22,7 @@ jobs:
           cache-key: flatpak-builder-${{ github.sha }}
       - uses: softprops/action-gh-release@v1
         with:
+          name: "wipEout"
+          tag_name: "v0.1~alpha0"
+          prerelease: true
           files: "*.flatpak"
