@@ -1,0 +1,63 @@
+---
+app-id: org.phoboslab.wipeout
+runtime: org.freedesktop.Platform
+runtime-version: '21.08'
+sdk: org.freedesktop.Sdk
+command: /app/bin/wipeout.sh
+
+cleanup:
+  - /lib/pkgconfig
+  - /lib/debug
+  - '*.la'
+  - '*.a'
+
+modules:
+  - shared-modules/glew/glew.json
+  - shared-modules/glu/glu-9.json
+
+  - name: wipeout-data
+    buildsystem: simple
+    build-commands:
+      - unzip -n wipeout-data-v01.zip
+    sources:
+      - type: file
+        url: https://phoboslab.org/files/wipeout-data-v01.zip
+        sha1: 16f9f188d171d2b1f891766a1e4ac2df7e70973e
+    post-install:
+      - mv wipeout $FLATPAK_DEST/wipeout
+
+  - name: wipeout-appdata
+    buildsystem: simple
+    build-commands: []
+    sources:
+      - type: file
+        path: org.phoboslab.wipeout.svg
+      - type: file
+        path: org.phoboslab.wipeout.metainfo.xml
+      - type: file
+        path: org.phoboslab.wipeout.desktop
+      - type: file
+        path: wipeout.sh
+    post-install:
+      - install -D -m 644 -t /app/share/icons/hicolor/scalable/apps/ org.phoboslab.wipeout.svg
+      - install -D -m 644 -t /app/share/metainfo/ org.phoboslab.wipeout.metainfo.xml
+      - install -D -m 755 -t /app/bin/ wipeout.sh
+      - desktop-file-install -m 644 --dir=/app/share/applications/ org.phoboslab.wipeout.desktop
+
+  - name: wipeout-rewrite
+    buildsystem: simple
+    build-commands:
+      - L_FLAGS="$(pkg-config --libs glew glu) -lm" make sdl
+    sources:
+      - type: git
+        url: https://github.com/phoboslab/wipeout-rewrite.git
+    post-install:
+      - install -D -m 755 -t $FLATPAK_DEST wipegame
+      - ln -sf /tmp/save.dat /app/save.dat
+
+finish-args:
+  - --device=all
+  - --share=ipc
+  - --socket=wayland
+  - --socket=x11
+  - --socket=pulseaudio

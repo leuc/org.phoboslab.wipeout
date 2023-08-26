@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.phoboslab.wipeout</id>
+  <launchable type="desktop-id">org.phoboslab.wipeout.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>None</project_license>
+  <name>wipEout (phoboslab rewrite)</name>
+  <summary>Futuristic Racing Video Game</summary>
+  <description>
+    <p>
+      A re-implementation of the 1995 PSX game wipEout.
+    </p>
+  </description>
+  <categories>
+    <category>Games</category>
+  </categories>
+  <url type="homepage">https://phoboslab.org/log/2023/08/rewriting-wipeout</url>
+  <developer_name>Dominic Szablewski</developer_name>
+  <releases>
+    <release type="development" version="0.1~alpha0" date="2023-08-26" />
+  </releases>
+</component>
