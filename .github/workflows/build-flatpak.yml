@@ -1,0 +1,17 @@
+---
+name: Build Flatpak bundle for wipEout rewrite
+
+jobs:
+  flatpak:
+    name: "Flatpak"
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:freedesktop-21.08
+      options: --privileged
+    steps:
+    - uses: actions/checkout@v3
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.1
+      with:
+        bundle: wipEout-rewrite.flatpak
+        manifest-path: org.phoboslab.wipeout.yml
+        cache-key: flatpak-builder-${{ github.sha }}
