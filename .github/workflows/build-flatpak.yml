@@ -3,7 +3,17 @@ name: Build and Release Flatpak
 
 on:
   workflow_dispatch:
-
+    inputs:
+      prerelease:
+        description: 'Pre-Release'
+        required: true
+        default: false
+        type: boolean
+      version:
+        description: 'Version'
+        required: true
+        type: string
+        default: "v0.0.0"
 jobs:
   flatpak:
     name: "Flatpak"
@@ -12,17 +22,24 @@ jobs:
       image: bilelmoussaoui/flatpak-github-actions:freedesktop-21.08
       options: --privileged
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.1
+      - name: Set App Manifest Release Version and Date
+        run: |
+          sed -i "s/VERSION/${{ inputs.version }}/" org.phoboslab.wipeout.metainfo.xml
+          sed -i "s/DATE/$(date +%Y-%m-%d)/" org.phoboslab.wipeout.metainfo.xml
+      - name: Build Flatpak
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6.1
         with:
-          bundle: wipEout-rewrite.flatpak
+          bundle: wipEout-rewrite.${{ inputs.version }}.flatpak
           manifest-path: org.phoboslab.wipeout.yml
           cache-key: flatpak-builder-${{ github.sha }}
-      - uses: softprops/action-gh-release@v1
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: "wipEout"
-          tag_name: "v0.1~alpha0"
-          prerelease: true
-          files: "*.flatpak"
+          name: "wipEout ${{ inputs.version }}"
+          tag_name: ${{ inputs.version }}
+          prerelease: ${{ inputs.prerelease }}
+          files: wipEout-rewrite.${{ inputs.version }}.flatpak
