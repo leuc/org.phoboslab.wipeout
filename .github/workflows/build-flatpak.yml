@@ -45,3 +45,4 @@ jobs:
           tag_name: ${{ inputs.version }}
           prerelease: ${{ inputs.prerelease }}
           files: wipEout-rewrite.${{ inputs.version }}.flatpak
+          body: "Flatpak Bundle of https://github.com/phoboslab/wipeout-rewrite"
