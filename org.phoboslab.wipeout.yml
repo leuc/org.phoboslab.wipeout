@@ -3,7 +3,7 @@ app-id: org.phoboslab.wipeout
 runtime: org.freedesktop.Platform
 runtime-version: '21.08'
 sdk: org.freedesktop.Sdk
-command: /app/bin/wipeout.sh
+command: wipegame
 
 cleanup:
   - /lib/pkgconfig
@@ -18,13 +18,14 @@ modules:
   - name: wipeout-data
     buildsystem: simple
     build-commands:
-      - unzip -n wipeout-data-v01.zip
+      - unzip -q -n wipeout-data-v01.zip
     sources:
       - type: file
         url: https://phoboslab.org/files/wipeout-data-v01.zip
         sha1: 16f9f188d171d2b1f891766a1e4ac2df7e70973e
     post-install:
-      - mv wipeout $FLATPAK_DEST/wipeout
+      - mkdir -m 755 -p $FLATPAK_DEST/share/games/
+      - mv -t $FLATPAK_DEST/share/games/ wipeout
 
   - name: wipeout-appdata
     buildsystem: simple
@@ -36,24 +37,20 @@ modules:
         path: org.phoboslab.wipeout.metainfo.xml
       - type: file
         path: org.phoboslab.wipeout.desktop
-      - type: file
-        path: wipeout.sh
     post-install:
-      - install -D -m 644 -t /app/share/icons/hicolor/scalable/apps/ org.phoboslab.wipeout.svg
-      - install -D -m 644 -t /app/share/metainfo/ org.phoboslab.wipeout.metainfo.xml
-      - install -D -m 755 -t /app/bin/ wipeout.sh
-      - desktop-file-install -m 644 --dir=/app/share/applications/ org.phoboslab.wipeout.desktop
+      - install -D -m 644 -t $FLATPAK_DEST/share/icons/hicolor/scalable/apps/ org.phoboslab.wipeout.svg
+      - install -D -m 644 -t $FLATPAK_DEST/share/metainfo/ org.phoboslab.wipeout.metainfo.xml
+      - desktop-file-install -m 644 --dir=$FLATPAK_DEST/share/applications/ org.phoboslab.wipeout.desktop
 
   - name: wipeout-rewrite
     buildsystem: simple
     build-commands:
-      - L_FLAGS="$(pkg-config --libs glew glu) -lm" make sdl
+      - USER_CFLAGS="-DPATH_ASSETS=$FLATPAK_DEST/share/games/" L_FLAGS="$(pkg-config --libs glew glu) -lm" make sdl
     sources:
       - type: git
         url: https://github.com/phoboslab/wipeout-rewrite.git
     post-install:
-      - install -D -m 755 -t $FLATPAK_DEST wipegame
-      - ln -sf /tmp/save.dat /app/save.dat
+      - install -D -m 755 -t $FLATPAK_DEST/bin wipegame
 
 finish-args:
   - --device=all
