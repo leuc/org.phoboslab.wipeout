@@ -17,6 +17,6 @@
   <url type="homepage">https://phoboslab.org/log/2023/08/rewriting-wipeout</url>
   <developer_name>Dominic Szablewski</developer_name>
   <releases>
-    <release type="development" version="0.1~alpha0" date="2023-08-26" />
+    <release type="development" version="VERSION" date="DATE" />
   </releases>
 </component>
