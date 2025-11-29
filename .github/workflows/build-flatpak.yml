@@ -19,7 +19,7 @@ jobs:
     name: "Flatpak"
     runs-on: ubuntu-latest
     container:
-      image: bilelmoussaoui/flatpak-github-actions:freedesktop-21.08
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
       options: --privileged
     steps:
       - name: Checkout Repo
@@ -31,13 +31,13 @@ jobs:
           sed -i "s/VERSION/${{ inputs.version }}/" org.phoboslab.wipeout.metainfo.xml
           sed -i "s/DATE/$(date +%Y-%m-%d)/" org.phoboslab.wipeout.metainfo.xml
       - name: Build Flatpak
-        uses: flatpak/flatpak-github-actions/flatpak-builder@v6.1
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: wipEout-rewrite.${{ inputs.version }}.flatpak
           manifest-path: org.phoboslab.wipeout.yml
           cache: false
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
