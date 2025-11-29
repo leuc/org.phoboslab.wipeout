@@ -35,7 +35,7 @@ jobs:
         with:
           bundle: wipEout-rewrite.${{ inputs.version }}.flatpak
           manifest-path: org.phoboslab.wipeout.yml
-          cache-key: flatpak-builder-${{ inputs.version }}
+          cache: false
       - name: Create Release
         uses: softprops/action-gh-release@v1
         env:
