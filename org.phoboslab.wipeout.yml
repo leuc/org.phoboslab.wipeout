@@ -22,7 +22,7 @@ modules:
     sources:
       - type: file
         url: https://phoboslab.org/files/wipeout-data-v01.zip
-        sha1: 16f9f188d171d2b1f891766a1e4ac2df7e70973e
+        sha512: d48083bcb77cb377a68e1db2a3216dede5f53a76e97269440576ed07ae11fb3e342a5c184df8d64abf78f7d02ed3ceed8614063998a182b760c18efe6f6f98d8
     post-install:      
       - install -D -m 755 -t $FLATPAK_DEST/share/games/ wipeout
 
@@ -31,7 +31,8 @@ modules:
     build-commands: []
     sources:
       - type: file
-        url: https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/refs/heads/master/gamecontrollerdb.txt
+        url: https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/cbfc87488e446c446d5b5ded1d99a0df2273d499/gamecontrollerdb.txt
+        sha512: 9ecc6b6bf6338bf621c4db411fb6eddb47211e004fbc39e7f3398c5a3146357957571076111bd491ef0e09b223dbe55cac7b5c582f15122ed1ca588a9d46d8d2
     post-install:      
       - install -D -m 644 -t $FLATPAK_DEST/bin/ gamecontrollerdb.txt
 
