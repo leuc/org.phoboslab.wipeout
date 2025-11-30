@@ -24,7 +24,8 @@ modules:
         url: https://phoboslab.org/files/wipeout-data-v01.zip
         sha512: d48083bcb77cb377a68e1db2a3216dede5f53a76e97269440576ed07ae11fb3e342a5c184df8d64abf78f7d02ed3ceed8614063998a182b760c18efe6f6f98d8
     post-install:      
-      - find wipeout -type f -exec install -v -D -m 644 -t $FLATPAK_DEST/share/games/ {} \+
+      - mkdir -m 755 -p $FLATPAK_DEST/share/games/
+      - mv -t $FLATPAK_DEST/share/games/ wipeout
 
   - name: gamecontrollerdb
     buildsystem: simple
@@ -34,7 +35,7 @@ modules:
         url: https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/cbfc87488e446c446d5b5ded1d99a0df2273d499/gamecontrollerdb.txt
         sha512: 9ecc6b6bf6338bf621c4db411fb6eddb47211e004fbc39e7f3398c5a3146357957571076111bd491ef0e09b223dbe55cac7b5c582f15122ed1ca588a9d46d8d2
     post-install:      
-      - install -v -D -m 644 -t $FLATPAK_DEST/bin/ gamecontrollerdb.txt
+      - install -D -m 644 -t $FLATPAK_DEST/bin/ gamecontrollerdb.txt
 
   - name: wipeout-appdata
     buildsystem: simple
@@ -47,8 +48,8 @@ modules:
       - type: file
         path: org.phoboslab.wipeout.desktop
     post-install:
-      - install -v -D -m 644 -t $FLATPAK_DEST/share/icons/hicolor/scalable/apps/ org.phoboslab.wipeout.svg
-      - install -v -D -m 644 -t $FLATPAK_DEST/share/metainfo/ org.phoboslab.wipeout.metainfo.xml
+      - install -D -m 644 -t $FLATPAK_DEST/share/icons/hicolor/scalable/apps/ org.phoboslab.wipeout.svg
+      - install -D -m 644 -t $FLATPAK_DEST/share/metainfo/ org.phoboslab.wipeout.metainfo.xml
       - desktop-file-install -m 644 --dir=$FLATPAK_DEST/share/applications/ org.phoboslab.wipeout.desktop
 
   - name: wipeout-rewrite
@@ -59,7 +60,7 @@ modules:
       - type: git
         url: https://github.com/phoboslab/wipeout-rewrite.git
     post-install:
-      - install -v -D -m 755 -t $FLATPAK_DEST/bin wipegame
+      - install -D -m 755 -t $FLATPAK_DEST/bin wipegame
 
 finish-args:
   - --device=all
